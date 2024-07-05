@@ -6,6 +6,7 @@ function App() {
     <>
       <div>
       <h1>Black Forest 2</h1>
+      <p>test WF</p>
       </div>
     </>
   )
