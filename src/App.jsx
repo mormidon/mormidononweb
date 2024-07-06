@@ -31,13 +31,14 @@ function App() {
     <>
       <div>
       <h1>{formattedDate}</h1>
+      <div className='flex-container'>
       <Button onClick={handleClick} variant="danger" size="lg" >Duo</Button>{' '}
-      <Button onClick={handleClick} variant="warning" size="lg" >Java</Button>{' '}
-      <Button onClick={handleClick} variant="secondary" size="lg" >Flight</Button>{' '}
-      <Button onClick={handleClick} variant="primary" size="lg" >Burp</Button>{' '}
-      <Button onClick={handleClick} variant="info" size="lg" >Prog</Button>{' '}
-      <Button onClick={handleClick} variant="success" size="lg" >edX</Button>{' '}
-    
+      <Button onClick={handleClick} variant="warning" size="lg" >Java</Button>
+      <Button onClick={handleClick} variant="secondary" size="lg" >Flight</Button>
+      <Button onClick={handleClick} variant="primary" size="lg" >Burp</Button>
+      <Button onClick={handleClick} variant="info" size="lg" >Prog</Button>
+      <Button onClick={handleClick} variant="success" size="lg" >edX</Button>
+      </div>
       </div>
       <br></br>
       <div><ProgressBar striped animated now={progr} label={`${progr.toFixed(2)}%`} max={100} min={0} /></div>
