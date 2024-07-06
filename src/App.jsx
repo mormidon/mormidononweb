@@ -1,17 +1,20 @@
 import './App.css'
 import { Button, ProgressBar } from 'react-bootstrap'
 import { useState } from 'react';
+import Confetti from './Confetti';
 
 
 function App() {
-
   const [progr, setProgr] = useState(0);
+  
 
   const handleClick = (event) => {
-    setProgr(progr + 1);
+    setProgr(progr + 100/6);
     event.target.disabled = true;
   }
+
   
+
   return (
     <>
       <div>
@@ -25,8 +28,9 @@ function App() {
     
       </div>
       <br></br>
-      <div><ProgressBar now={progr} max={6} min={0} /></div>
-    
+      <div><ProgressBar striped animated now={progr} label={`${progr.toFixed(2)}%`} max={100} min={0} /></div>
+      {progr>= 100 && <Confetti />}
+     
     </>
   )
 }
