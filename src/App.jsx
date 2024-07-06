@@ -6,6 +6,18 @@ import Confetti from './Confetti';
 
 function App() {
   const [progr, setProgr] = useState(0);
+
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  const monthIndex = today.getMonth();
+  const month = monthNames[monthIndex];
+  const year = today.getFullYear();
+  
+  const formattedDate = `${day} ${month} ${year}`;
   
 
   const handleClick = (event) => {
@@ -18,7 +30,7 @@ function App() {
   return (
     <>
       <div>
-      <h1>Black Forest 2</h1>
+      <h1>{formattedDate}</h1>
       <Button onClick={handleClick} variant="danger" size="lg" >Duo</Button>{' '}
       <Button onClick={handleClick} variant="warning" size="lg" >Java</Button>{' '}
       <Button onClick={handleClick} variant="secondary" size="lg" >Flight</Button>{' '}
