@@ -4,6 +4,7 @@ import CurrentDate from "./CurrentDate";
 import ButtonsBar from "./ButtonsBar";
 import Progress from "./Progress";
 import Confetti from "./Confetti";
+import TaskCalendar from "./TaskCalendar";
 
 function App() {
   const [progr, setProgr] = useState(0);
@@ -21,6 +22,8 @@ function App() {
       <br />
       <Progress percents={progr} />
       {progr >= 100 && <Confetti />}
+      <br />
+      <TaskCalendar />
     </>
   );
 }
