@@ -1,32 +1,25 @@
 import { useState, useEffect } from "react";
 import { Calendar, CheckSquare, Square, Plus, BarChart3 } from "lucide-react";
+import { Button } from "react-bootstrap";
 import "./TaskCalendar.css"; // Import the CSS file
 
 const TaskCalendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [tasks, setTasks] = useState({});
+  const [obligatoryTasks, setObligatoryTasks] = useState({});
   const [showAddTask, setShowAddTask] = useState(false);
   const [newTask, setNewTask] = useState("");
 
-  // Initialize with some sample data
-  useEffect(() => {
-    const sampleTasks = {
-      "2025-08-08": [
-        { id: 1, text: "Complete project proposal", completed: true },
-        { id: 2, text: "Review code changes", completed: true },
-        { id: 3, text: "Team standup meeting", completed: false },
-      ],
-      "2025-08-09": [
-        { id: 4, text: "Client presentation", completed: true },
-        { id: 5, text: "Update documentation", completed: false },
-        { id: 6, text: "Fix bug reports", completed: true },
-        { id: 7, text: "Plan sprint", completed: false },
-      ],
-      "2025-08-10": [{ id: 8, text: "Deploy to production", completed: true }],
-    };
-    setTasks(sampleTasks);
-  }, []);
+  // Obligatory task definitions
+  const obligatoryTaskTypes = [
+    { key: "ART", variant: "primary", label: "ART" },
+    { key: "FUN", variant: "primary", label: "FUN" },
+    { key: "SIN", variant: "primary", label: "SIN" },
+    { key: "DOM", variant: "primary", label: "DOM" },
+    { key: "ORK", variant: "primary", label: "ORK" },
+    { key: "WIZ", variant: "primary", label: "WIZ" },
+  ];
 
   const formatDateKey = (date) => {
     return date.toISOString().split("T")[0];
@@ -37,20 +30,45 @@ const TaskCalendar = () => {
     return tasks[dateKey] || [];
   };
 
+  const getObligatoryTasksForDate = (date) => {
+    const dateKey = formatDateKey(date);
+    return obligatoryTasks[dateKey] || {};
+  };
+
   const getCompletionPercentage = (date) => {
     const dateTasks = getTasksForDate(date);
-    if (dateTasks.length === 0) return 0;
-    const completed = dateTasks.filter((task) => task.completed).length;
-    return Math.round((completed / dateTasks.length) * 100);
+    const dateObligatoryTasks = getObligatoryTasksForDate(date);
+
+    const totalTasks = dateTasks.length + obligatoryTaskTypes.length;
+    if (totalTasks === 0) return 0;
+
+    const completedRegularTasks = dateTasks.filter(
+      (task) => task.completed
+    ).length;
+    const completedObligatoryTasks =
+      Object.values(dateObligatoryTasks).filter(Boolean).length;
+
+    return Math.round(
+      ((completedRegularTasks + completedObligatoryTasks) / totalTasks) * 100
+    );
   };
 
   const getCompletedCount = (date) => {
     const dateTasks = getTasksForDate(date);
-    return dateTasks.filter((task) => task.completed).length;
+    const dateObligatoryTasks = getObligatoryTasksForDate(date);
+
+    const completedRegularTasks = dateTasks.filter(
+      (task) => task.completed
+    ).length;
+    const completedObligatoryTasks =
+      Object.values(dateObligatoryTasks).filter(Boolean).length;
+
+    return completedRegularTasks + completedObligatoryTasks;
   };
 
   const getTotalCount = (date) => {
-    return getTasksForDate(date).length;
+    const dateTasks = getTasksForDate(date);
+    return dateTasks.length + obligatoryTaskTypes.length;
   };
 
   const toggleTask = (taskId) => {
@@ -61,6 +79,17 @@ const TaskCalendar = () => {
         prev[dateKey]?.map((task) =>
           task.id === taskId ? { ...task, completed: !task.completed } : task
         ) || [],
+    }));
+  };
+
+  const toggleObligatoryTask = (taskKey) => {
+    const dateKey = formatDateKey(selectedDate);
+    setObligatoryTasks((prev) => ({
+      ...prev,
+      [dateKey]: {
+        ...prev[dateKey],
+        [taskKey]: !prev[dateKey]?.[taskKey],
+      },
     }));
   };
 
@@ -161,6 +190,7 @@ const TaskCalendar = () => {
   };
 
   const selectedDateTasks = getTasksForDate(selectedDate);
+  const selectedDateObligatoryTasks = getObligatoryTasksForDate(selectedDate);
   const completionPercentage = getCompletionPercentage(selectedDate);
   const completedCount = getCompletedCount(selectedDate);
   const totalCount = getTotalCount(selectedDate);
@@ -285,6 +315,45 @@ const TaskCalendar = () => {
                 </button>
               </div>
 
+              {/* Obligatory Tasks Buttons */}
+              <div className="obligatory-tasks-section">
+                <h4 className="obligatory-tasks-title">
+                  Daily Routine
+                </h4>
+                <div className="obligatory-tasks-grid">
+                  {obligatoryTaskTypes.map((taskType) => {
+                    const isCompleted =
+                      selectedDateObligatoryTasks[taskType.key] || false;F
+                    return (
+                      <Button
+                        key={taskType.key}
+                        variant={isCompleted ? "success" : taskType.variant}
+                        size="lg"
+                        onClick={() => toggleObligatoryTask(taskType.key)}
+                        className={`obligatory-task-button ${
+                          isCompleted ? "completed" : ""
+                        }`}
+                      >
+                        {isCompleted ? (
+                          <>
+                            <CheckSquare
+                              size={16}
+                              style={{ marginRight: "5px" }}
+                            />
+                            {taskType.label}
+                          </>
+                        ) : (
+                          <>
+                            <Square size={16} style={{ marginRight: "5px" }} />
+                            {taskType.label}
+                          </>
+                        )}
+                      </Button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {totalCount > 0 && (
                 <div className="progress-summary">
                   <div className="progress-header">
@@ -333,9 +402,13 @@ const TaskCalendar = () => {
                 </div>
               )}
 
+              {/* Regular Tasks List */}
               <div className="tasks-list">
+                <h4 className="tasks-list-title">Additional Tasks</h4>
                 {selectedDateTasks.length === 0 ? (
-                  <div className="no-tasks">No tasks for this day</div>
+                  <div className="no-tasks">
+                    No additional tasks for this day
+                  </div>
                 ) : (
                   selectedDateTasks.map((task) => (
                     <div
@@ -372,13 +445,30 @@ const TaskCalendar = () => {
             <div className="stats-summary">
               <h4 className="stats-title">This Month Summary</h4>
               <div className="stats-list">
-                {Object.entries(tasks).map(([dateKey, dayTasks]) => {
+                {Array.from(
+                  new Set([
+                    ...Object.keys(tasks),
+                    ...Object.keys(obligatoryTasks),
+                  ])
+                ).map((dateKey) => {
                   const date = new Date(dateKey);
-                  const percentage = Math.round(
-                    (dayTasks.filter((t) => t.completed).length /
-                      dayTasks.length) *
-                      100
-                  );
+                  const dayTasks = tasks[dateKey] || [];
+                  const dayObligatoryTasks = obligatoryTasks[dateKey] || {};
+
+                  const totalTasks =
+                    dayTasks.length + obligatoryTaskTypes.length;
+                  const completedRegularTasks = dayTasks.filter(
+                    (t) => t.completed
+                  ).length;
+                  const completedObligatoryTasks =
+                    Object.values(dayObligatoryTasks).filter(Boolean).length;
+                  const totalCompleted =
+                    completedRegularTasks + completedObligatoryTasks;
+
+                  const percentage =
+                    totalTasks > 0
+                      ? Math.round((totalCompleted / totalTasks) * 100)
+                      : 0;
 
                   return (
                     <div key={dateKey} className="stats-item">
@@ -390,8 +480,7 @@ const TaskCalendar = () => {
                       </span>
                       <div className="stats-data">
                         <span className="stats-count">
-                          {dayTasks.filter((t) => t.completed).length}/
-                          {dayTasks.length}
+                          {totalCompleted}/{totalTasks}
                         </span>
                         <span
                           className={`stats-percentage ${getStatsPercentageClass(

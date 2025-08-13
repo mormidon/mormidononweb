@@ -1,4 +1,4 @@
-/* TaskCalendar.css - Responsive styles for all devices */
+/* TaskCalendar.css - Responsive styles for all devices with obligatory tasks */
 
 /* Base container styles */
 .task-calendar-container {
@@ -7,6 +7,7 @@
   background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 100%);
   min-height: 100vh;
   box-sizing: border-box;
+  border-radius: 0.75rem;
 }
 
 .task-calendar-main {
@@ -237,6 +238,145 @@
   background: #2563eb;
 }
 
+/* Obligatory Tasks Section */
+.obligatory-tasks-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 0.5rem;
+  border: 2px solid #e0e7ff;
+}
+
+.obligatory-tasks-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #4338ca;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.obligatory-tasks-title::before {
+  content: "⭐";
+  font-size: 1.125rem;
+}
+
+.obligatory-tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 0;
+}
+
+.obligatory-task-button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0.75rem 0.5rem !important;
+  border: 2px solid transparent !important;
+  border-radius: 0.75rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  position: relative;
+  overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.obligatory-task-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.obligatory-task-button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Specific button styles when not completed */
+.obligatory-task-button.btn-danger {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  border-color: #b91c1c !important;
+}
+
+.obligatory-task-button.btn-warning {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+  border-color: #b45309 !important;
+}
+
+.obligatory-task-button.btn-secondary {
+  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+  border-color: #4b5563 !important;
+}
+
+.obligatory-task-button.btn-primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  border-color: #1d4ed8 !important;
+}
+
+.obligatory-task-button.btn-info {
+  background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%) !important;
+  border-color: #0e7490 !important;
+}
+
+.obligatory-task-button.btn-success:not(.completed) {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border-color: #047857 !important;
+}
+
+/* Completed state styles */
+.obligatory-task-button.completed {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border-color: #047857 !important;
+  color: white !important;
+  position: relative;
+}
+
+.obligatory-task-button.completed::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.2) 50%, transparent 60%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.obligatory-task-button.completed:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+}
+
+/* Icon spacing */
+.obligatory-task-button svg {
+  margin-right: 0.5rem !important;
+  flex-shrink: 0;
+}
+
+/* Tasks list title */
+.tasks-list-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #6366f1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tasks-list-title::before {
+  content: "📝";
+  font-size: 1.125rem;
+}
+
 /* Progress summary */
 .progress-summary {
   margin-bottom: 1rem;
@@ -248,7 +388,7 @@
 .progress-header {
   display: flex;
   align-items: center;
-  justify-content: between;
+  justify-content: space-between;
   margin-bottom: 0.5rem;
   font-size: 0.875rem;
   color: #6b7280;
@@ -511,6 +651,17 @@
   .add-task-button {
     justify-content: center;
   }
+  
+  /* Obligatory tasks responsive */
+  .obligatory-tasks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .obligatory-task-button {
+    padding: 0.625rem 0.5rem !important;
+    font-size: 0.75rem !important;
+  }
 }
 
 /* Mobile phones */
@@ -623,6 +774,34 @@
   .stats-item {
     font-size: 0.75rem;
   }
+  
+  /* Mobile obligatory tasks */
+  .obligatory-tasks-section {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+  }
+  
+  .obligatory-tasks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.375rem;
+  }
+  
+  .obligatory-task-button {
+    padding: 0.5rem 0.25rem !important;
+    font-size: 0.625rem !important;
+    letter-spacing: 0.25px !important;
+  }
+  
+  .obligatory-task-button svg {
+    margin-right: 0.25rem !important;
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+  }
+  
+  .obligatory-tasks-title,
+  .tasks-list-title {
+    font-size: 0.875rem;
+  }
 }
 
 /* Very small screens */
@@ -668,32 +847,6 @@
   }
 }
 
-/* Print styles */
-@media print {
-  .task-calendar-container {
-    background: white;
-    padding: 0;
-  }
-  
-  .task-calendar-header {
-    background: #f3f4f6 !important;
-    color: black !important;
-  }
-  
-  .add-task-button,
-  .nav-button {
-    display: none;
-  }
-  
-  .day-cell {
-    border: 1px solid #000;
-  }
-  
-  .task-item {
-    break-inside: avoid;
-  }
-}
-
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   .task-calendar-container {
@@ -735,6 +888,51 @@
   .stats-date {
     color: #d1d5db;
   }
+  
+  /* Dark mode obligatory tasks */
+  .obligatory-tasks-section {
+    background: #374151;
+    border-color: #4b5563;
+  }
+  
+  .obligatory-tasks-title,
+  .tasks-list-title {
+    color: #a78bfa;
+  }
+  
+  .obligatory-task-button {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+  }
+  
+  .obligatory-task-button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .task-calendar-container {
+    background: white;
+    padding: 0;
+  }
+  
+  .task-calendar-header {
+    background: #f3f4f6 !important;
+    color: black !important;
+  }
+  
+  .add-task-button,
+  .nav-button {
+    display: none;
+  }
+  
+  .day-cell {
+    border: 1px solid #000;
+  }
+  
+  .task-item {
+    break-inside: avoid;
+  }
 }
 
 /* Accessibility enhancements */
@@ -767,7 +965,8 @@
 .form-button:focus,
 .day-cell:focus,
 .task-item:focus,
-.task-input:focus {
+.task-input:focus,
+.obligatory-task-button:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }

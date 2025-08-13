@@ -17,12 +17,7 @@ function App() {
   return (
     <>
       <CurrentDate />
-      <br />
-      <ButtonsBar buttonClick={handleClick} />
-      <br />
-      <Progress percents={progr} />
-      {progr >= 100 && <Confetti />}
-      <br />
+       <br />
       <TaskCalendar />
     </>
   );

@@ -6,22 +6,22 @@ function ButtonsBar({ buttonClick }) {
     <>
       <div className="flex-container">
         <Button onClick={buttonClick} variant="danger" size="lg">
-          Duo
+          ART
         </Button>
         <Button onClick={buttonClick} variant="warning" size="lg">
-          Java
+          FUN
         </Button>
         <Button onClick={buttonClick} variant="secondary" size="lg">
-          Flight
+          SIN
         </Button>
         <Button onClick={buttonClick} variant="primary" size="lg">
-          Burp
+          DOM
         </Button>
         <Button onClick={buttonClick} variant="info" size="lg">
-          Prog
+          ORK
         </Button>
         <Button onClick={buttonClick} variant="success" size="lg">
-          edX
+          WIZ
         </Button>
       </div>
     </>
