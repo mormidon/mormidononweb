@@ -323,7 +323,7 @@ const TaskCalendar = () => {
                 <div className="obligatory-tasks-grid">
                   {obligatoryTaskTypes.map((taskType) => {
                     const isCompleted =
-                      selectedDateObligatoryTasks[taskType.key] || false;F
+                      selectedDateObligatoryTasks[taskType.key] || false;
                     return (
                       <Button
                         key={taskType.key}

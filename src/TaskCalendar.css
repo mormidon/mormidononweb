@@ -408,6 +408,12 @@
   transition: width 0.3s ease;
 }
 
+.progress-fill-large.green { background: #10b981; }
+.progress-fill-large.blue { background: #3b82f6; }
+.progress-fill-large.yellow { background: #f59e0b; }
+.progress-fill-large.orange { background: #f97316; }
+.progress-fill-large.red { background: #ef4444; }
+
 .progress-text {
   font-size: 0.75rem;
   color: #6b7280;
