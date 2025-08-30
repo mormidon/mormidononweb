@@ -1,6 +1,16 @@
-import { useState, useEffect } from "react";
-import { Calendar, CheckSquare, Square, Plus, BarChart3 } from "lucide-react";
+import { useAuth } from "./App.jsx";
+import { useState, useEffect, useContext } from "react";
+import {
+  Calendar,
+  CheckSquare,
+  Square,
+  Plus,
+  BarChart3,
+  LayoutDashboard,
+  LogOut,
+} from "lucide-react";
 import { Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import "./TaskCalendar.css"; // Import the CSS file
 
 const TaskCalendar = () => {
@@ -10,6 +20,20 @@ const TaskCalendar = () => {
   const [obligatoryTasks, setObligatoryTasks] = useState({});
   const [showAddTask, setShowAddTask] = useState(false);
   const [newTask, setNewTask] = useState("");
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDashboardClick = () => {
+    navigate("/dashboard");
+  };
+
+  const handleLogoutClick = () => {
+    const username = user?.username;
+    logout();
+    setTimeout(() => {
+      navigate("/see-you-soon", { state: { username }, replace: true });
+    }, 0);
+  };
 
   // Obligatory task definitions
   const obligatoryTaskTypes = [
@@ -198,18 +222,34 @@ const TaskCalendar = () => {
   return (
     <div className="task-calendar-container">
       <div className="task-calendar-main">
-        <div className="task-calendar-header">
+        <header className="task-calendar-header">
           <div className="header-content">
             <div className="header-title">
-              <Calendar size={32} />
+              <Calendar className="calendar-icon" />
               <h1>Task Calendar</h1>
             </div>
             <div className="header-stats">
-              <BarChart3 size={24} />
-              <span>Productivity Tracker</span>
+              <span className="user-welcome">Welcome, {user?.username}</span>
+              <div className="header-buttons">
+                <button
+                  className="header-btn dashboard-btn"
+                  onClick={handleDashboardClick}
+                >
+                  <LayoutDashboard className="btn-icon" />
+                  <span>Dashboard</span>
+                </button>
+
+                <button
+                  className="header-btn logout-btn"
+                  onClick={handleLogoutClick}
+                >
+                  <LogOut className="btn-icon" />
+                  <span>Logout</span>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </header>
 
         <div className="calendar-grid">
           {/* Calendar Section */}
@@ -317,9 +357,7 @@ const TaskCalendar = () => {
 
               {/* Obligatory Tasks Buttons */}
               <div className="obligatory-tasks-section">
-                <h4 className="obligatory-tasks-title">
-                  Daily Routine
-                </h4>
+                <h4 className="obligatory-tasks-title">Daily Routine</h4>
                 <div className="obligatory-tasks-grid">
                   {obligatoryTaskTypes.map((taskType) => {
                     const isCompleted =
